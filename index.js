@@ -4,7 +4,7 @@ const fs = require('fs');
 const START = '[start]';
 const END = '[end]';
 
-fs.readFile('./juco.txt', (err, contents) => {
+fs.readFile('./zanreads.txt', (err, contents) => {
     // console.log(contents.toString());
     // contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
     // console.log(contents);
@@ -19,37 +19,37 @@ fs.readFile('./juco.txt', (err, contents) => {
         ngrams: [],
     });
 
-    var _2gramCounts = grams.nm1grams
-        .reduce((hash, _3gram) => {
-            hash[_3gram.toString()] = hash[_3gram.toString()] || 0;
-            hash[_3gram.toString()]++;
+    var nm1gramCounts = grams.nm1grams
+        .reduce((hash, ngram) => {
+            hash[ngram.toString()] = hash[ngram.toString()] || 0;
+            hash[ngram.toString()]++;
             return hash;
         }, {});
 
-    var _3gramCounts = grams.ngrams
+    var ngramCounts = grams.ngrams
         .reduce((hash, gram) => {
             hash[gram.toString()] = hash[gram.toString()] || 0;
             hash[gram.toString()]++;
             return hash;
         }, {});
 
-    var _3gramProbs = Object.keys(_3gramCounts).reduce((hash, _3gramKey) => {
-        var _3gram = _3gramKey.split(',');
-        var _2gram = _3gram.slice(0, _3gram.length - 1);
-        hash[_3gram.toString()] = _3gramCounts[_3gram.toString()] / _2gramCounts[_2gram.toString()]
+    var ngramProbs = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
+        var ngram = ngramKey.split(',');
+        var nm1gram = ngram.slice(0, ngram.length - 1);
+        hash[ngram.toString()] = ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()]
         return hash;
     }, {});
 
-    var _3gramsByStart = Object.keys(_3gramCounts).reduce((hash, _3gramKey) => {
-        var _3gram = _3gramKey.split(',');
-        hash[_3gram[0]] = hash[_3gram[0]] || [];
-        hash[_3gram[0]].push({prob: _3gramProbs[_3gramKey], ngram: _3gram});
+    var ngramsByStart = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
+        var ngram = ngramKey.split(',');
+        hash[ngram[0]] = hash[ngram[0]] || [];
+        hash[ngram[0]].push({prob: ngramProbs[ngramKey], ngram: ngram});
         return hash;
     }, {});
-    // console.log('_3gramsByStart', JSON.stringify(_3gramsByStart, null, 4));
-    fs.writeFile('./probs.json', JSON.stringify(_3gramsByStart, null, 4), (err) => { err && console.log(err);})
+    // console.log('ngramsByStart', JSON.stringify(ngramsByStart, null, 4));
+    fs.writeFile('./probs.json', JSON.stringify(ngramsByStart, null, 4), (err) => { err && console.log(err);})
 
-    console.log(_generate(_3gramsByStart));
+    console.log(_generate(ngramsByStart));
 });
 
 
