@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const START = '[start]';
 const END = '[end]';
+const N = 3;
 
 fs.readFile('./zanreads.txt', (err, contents) => {
     // console.log(contents.toString());
@@ -11,8 +12,8 @@ fs.readFile('./zanreads.txt', (err, contents) => {
     var phrases = contents.toString().toLowerCase().split(/\.\s/);
 
     let grams = phrases.reduce((acc, phrase) => {
-        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, 2, START, END));
-        acc.ngrams = acc.ngrams.concat(natural.NGrams.ngrams(phrase, 3, START, END));
+        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, N - 1, START, END));
+        acc.ngrams = acc.ngrams.concat(natural.NGrams.ngrams(phrase, N, START, END));
         return acc;
     }, {
         nm1grams: [],
