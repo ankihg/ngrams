@@ -4,19 +4,32 @@ const fs = require('fs');
 const START = '[start]';
 const END = '[end]';
 
-fs.readFile('./zanreads.txt', (err, contents) => {
+fs.readFile('./juco.txt', (err, contents) => {
     // console.log(contents.toString());
+    // contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
+    // console.log(contents);
+    var phrases = contents.toString().toLowerCase().split(/\.\s/);
 
-    var _2gramCounts = natural.NGrams.ngrams(contents.toString().toLowerCase(), 2, START, END)
+    let grams = phrases.reduce((acc, phrase) => {
+        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, 2, START, END));
+        acc.ngrams = acc.ngrams.concat(natural.NGrams.ngrams(phrase, 3, START, END));
+        return acc;
+    }, {
+        nm1grams: [],
+        ngrams: [],
+    });
+    console.log(grams);
+    return;
+
+    var _2gramCounts = natural.NGrams.ngrams(contents, 2, START, END)
         .reduce((hash, _3gram) => {
             hash[_3gram.toString()] = hash[_3gram.toString()] || 0;
             hash[_3gram.toString()]++;
             return hash;
         }, {});
+    console.log(natural.NGrams.ngrams(contents, 2, START, END));
 
-    console.log(natural.NGrams.ngrams(contents.toString().toLowerCase(), 3, START, END));
-
-    var _3gramCounts = natural.NGrams.ngrams(contents.toString().toLowerCase(), 3, START, END)
+    var _3gramCounts = natural.NGrams.ngrams(contents, 3, START, END)
         .reduce((hash, gram) => {
             hash[gram.toString()] = hash[gram.toString()] || 0;
             hash[gram.toString()]++;
