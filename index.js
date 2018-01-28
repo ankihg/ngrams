@@ -3,9 +3,9 @@ const fs = require('fs');
 
 const START = '[start]';
 const END = '[end]';
-const N = 4;
+const N = 3;
 
-fs.readFile('./datasets/drseuss.txt', (err, contents) => {
+fs.readFile('./datasets/zanreads.txt', (err, contents) => {
     // console.log(contents.toString());
     // contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
     // console.log(contents);
