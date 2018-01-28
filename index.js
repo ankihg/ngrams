@@ -3,9 +3,9 @@ const fs = require('fs');
 
 const START = '[start]';
 const END = '[end]';
-const N = 3;
+const N = 4;
 
-fs.readFile('./zanreads.txt', (err, contents) => {
+fs.readFile('./datasets/drseuss.txt', (err, contents) => {
     // console.log(contents.toString());
     // contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
     // console.log(contents);
@@ -37,7 +37,10 @@ fs.readFile('./zanreads.txt', (err, contents) => {
     var ngramProbs = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
         var ngram = ngramKey.split(',');
         var nm1gram = ngram.slice(0, ngram.length - 1);
-        hash[ngram.toString()] = ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()]
+        hash[ngram.toString()] = ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()];
+        // console.log(hash[ngram.toString()], ngramKey, ngramCounts[ngram.toString()], nm1gram.toString(), nm1gramCounts[nm1gram.toString()]);
+        // if (!(ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()]))
+        //     console.log(ngramKey, nm1gramCounts[nm1gram.toString()]);
         return hash;
     }, {});
 
