@@ -18,18 +18,15 @@ fs.readFile('./juco.txt', (err, contents) => {
         nm1grams: [],
         ngrams: [],
     });
-    console.log(grams);
-    return;
 
-    var _2gramCounts = natural.NGrams.ngrams(contents, 2, START, END)
+    var _2gramCounts = grams.nm1grams
         .reduce((hash, _3gram) => {
             hash[_3gram.toString()] = hash[_3gram.toString()] || 0;
             hash[_3gram.toString()]++;
             return hash;
         }, {});
-    console.log(natural.NGrams.ngrams(contents, 2, START, END));
 
-    var _3gramCounts = natural.NGrams.ngrams(contents, 3, START, END)
+    var _3gramCounts = grams.ngrams
         .reduce((hash, gram) => {
             hash[gram.toString()] = hash[gram.toString()] || 0;
             hash[gram.toString()]++;
@@ -52,7 +49,7 @@ fs.readFile('./juco.txt', (err, contents) => {
     // console.log('_3gramsByStart', JSON.stringify(_3gramsByStart, null, 4));
     fs.writeFile('./probs.json', JSON.stringify(_3gramsByStart, null, 4), (err) => { err && console.log(err);})
 
-    // console.log(_generate(_3gramsByStart));
+    console.log(_generate(_3gramsByStart));
 });
 
 
