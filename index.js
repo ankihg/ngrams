@@ -3,9 +3,9 @@ const fs = require('fs');
 
 const START = '[start]';
 const END = '[end]';
-const N = 3;
+const N = 6;
 
-fs.readFile('./datasets/zanreads.txt', (err, contents) => {
+fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     // console.log(contents.toString());
     // contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
     // console.log(contents);
@@ -53,7 +53,9 @@ fs.readFile('./datasets/zanreads.txt', (err, contents) => {
     // console.log('ngramsByStart', JSON.stringify(ngramsByStart, null, 4));
     fs.writeFile('./probs.json', JSON.stringify(ngramsByStart, null, 4), (err) => { err && console.log(err);})
 
-    console.log(_generate(ngramsByStart));
+    var outupt = _generate(ngramsByStart);
+    console.log(outupt);
+    console.log(_cleanOutput(outupt));
 });
 
 
@@ -67,4 +69,8 @@ function _generate(_ngramsByStart, phrase='', start=START) {
     var ngram = possibleNGrams[r].ngram;
     phrase += ' ' + ngram.slice(1).join(' ');
     return _generate(_ngramsByStart, phrase, ngram[ngram.length - 1]);
+}
+
+function _cleanOutput(str) {
+    return str.replace(/ 000 /g, '\n ').replace(/ 000 /g, '\n ');
 }
