@@ -1,8 +1,8 @@
 const natural = require('natural');
 const fs = require('fs');
 
-const START = '[start]';
-const END = '[end]';
+const START = '<start>';
+const END = '<end>';
 const N = 6;
 
 fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
@@ -54,7 +54,7 @@ fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     fs.writeFile('./probs.json', JSON.stringify(ngramsByStart, null, 4), (err) => { err && console.log(err);})
 
     var outupt = _generate(ngramsByStart);
-    console.log(outupt);
+    // console.log(outupt);
     console.log(_cleanOutput(outupt));
 });
 
@@ -72,5 +72,8 @@ function _generate(_ngramsByStart, phrase='', start=START) {
 }
 
 function _cleanOutput(str) {
-    return str.replace(/ 000 /g, '\n ').replace(/ 000 /g, '\n ');
+    return str
+        .replace(/ 000 /g, '\n ').replace(/ 000 /g, '\n ')
+        .replace(new RegExp(START, 'g'), '')
+        .replace(new RegExp(END, 'g'), '');
 }
