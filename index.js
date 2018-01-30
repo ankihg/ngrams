@@ -4,7 +4,16 @@ const fs = require('fs');
 const START = '<start>';
 const END = '<end>';
 const N = 5;
-const OVERLAP_WINDOW = 2;
+const OVERLAP_WINDOW = 3;
+
+var START_MATCH = [];
+var END_MATCH = [];
+for (var i = 0; i < OVERLAP_WINDOW; i++) {
+    START_MATCH.push(START);
+    END_MATCH.push(END);
+}
+START_MATCH = START_MATCH.toString();
+END_MATCH = END_MATCH.toString();
 
 fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     // console.log(contents.toString());
@@ -13,7 +22,7 @@ fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     var phrases = contents.toString().toLowerCase().split(/\.\s/);
 
     let grams = phrases.reduce((acc, phrase) => {
-        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, N - OVERLAP_WINDOW, START, END));
+        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, N - 1, START, END));
         acc.ngrams = acc.ngrams.concat(natural.NGrams.ngrams(phrase, N, START, END));
         return acc;
     }, {
@@ -47,11 +56,13 @@ fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
 
     var ngramsByStart = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
         var ngram = ngramKey.split(',');
-        hash[ngram[0]] = hash[ngram[0]] || [];
-        hash[ngram[0]].push({prob: ngramProbs[ngramKey], ngram: ngram});
+        var matchKey = ngram.slice(0, OVERLAP_WINDOW).toString();
+        hash[matchKey] = hash[matchKey] || [];
+        hash[matchKey].push({prob: ngramProbs[ngramKey], ngram: ngram});
         return hash;
     }, {});
     // console.log('ngramsByStart', JSON.stringify(ngramsByStart, null, 4));
+    // console.log(ngramsByStart);
     fs.writeFile('./probs.json', JSON.stringify(ngramsByStart, null, 4), (err) => { err && console.log(err);})
 
     var outupt = _generate(ngramsByStart);
@@ -59,17 +70,16 @@ fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     console.log(_cleanOutput(outupt));
 });
 
-
-function _generate(_ngramsByStart, phrase='', start=START) {
+function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
     // phrase = phrase || '';
     // start = start || START;
-    if (start === END) return phrase;
+    if (start === END_MATCH) return phrase;
 
     var possibleNGrams = _ngramsByStart[start];
     var r = Math.floor(Math.random() * possibleNGrams.length);
     var ngram = possibleNGrams[r].ngram;
-    phrase += ' ' + ngram.slice(1).join(' ');
-    return _generate(_ngramsByStart, phrase, ngram[ngram.length - 1]);
+    phrase += ' ' + ngram.slice(OVERLAP_WINDOW).join(' ');
+    return _generate(_ngramsByStart, phrase, ngram.slice(ngram.length - OVERLAP_WINDOW).toString());
 }
 
 function _cleanOutput(str) {
