@@ -3,7 +3,8 @@ const fs = require('fs');
 
 const START = '<start>';
 const END = '<end>';
-const N = 6;
+const N = 5;
+const OVERLAP_WINDOW = 2;
 
 fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     // console.log(contents.toString());
@@ -12,7 +13,7 @@ fs.readFile('./datasets/arcade_fire.txt', (err, contents) => {
     var phrases = contents.toString().toLowerCase().split(/\.\s/);
 
     let grams = phrases.reduce((acc, phrase) => {
-        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, N - 1, START, END));
+        acc.nm1grams = acc.nm1grams.concat(natural.NGrams.ngrams(phrase, N - OVERLAP_WINDOW, START, END));
         acc.ngrams = acc.ngrams.concat(natural.NGrams.ngrams(phrase, N, START, END));
         return acc;
     }, {
