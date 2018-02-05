@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const START = '<start>';
 const END = '<end>';
-const N = 5;
+const N = 6;
 const OVERLAP_WINDOW = 3;
 
 var START_MATCH = [];
