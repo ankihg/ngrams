@@ -166,7 +166,7 @@ function _cleanOutput(str) {
     return str
         .replace(/ 000 /g, '\n ').replace(/ 000 /g, '\n ')
         .replace(/ m /g, '\'m ').replace(/ s /g, '\'s ').replace(/ t /g, '\'t ')
-        .replace(/ ve /g, '\'ve ').replace(/ re /g, '\'re ')
+        .replace(/ ve /g, '\'ve ').replace(/ re /g, '\'re ').replace(/ ll /g, '\'ll ')
         .replace(new RegExp(START, 'g'), '')
         .replace(new RegExp(END, 'g'), '');
 }
