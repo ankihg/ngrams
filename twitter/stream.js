@@ -1,4 +1,5 @@
 const T = require('./init')
+const generateNgram = require('../index');
 
 //
 //  filter the twitter public stream by the word 'mango'.
@@ -6,7 +7,6 @@ const T = require('./init')
 
 
 _stream('arcade fire')
-// _stream('trump')
 
 
 function _stream(track) {
@@ -14,5 +14,6 @@ function _stream(track) {
         .on('tweet', function (tweet) {
           console.log('\n\n' + track + '\n');
           console.log(tweet.text);
+          generateNgram();
         })
 }

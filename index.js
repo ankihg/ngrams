@@ -2,9 +2,9 @@ const natural = require('natural');
 const fs = require('fs');
 const twitter = require('./twitter');
 
-const TRAINING_DATA_PATH = './datasets/djt.json';
-// const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
-const TWEET = false;
+// const TRAINING_DATA_PATH = './datasets/djt.json';
+const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
+const TWEET = true;
 
 const START = '<start>';
 const END = '<end>';
@@ -25,7 +25,7 @@ END_MATCH = END_MATCH.toString();
 const run = module.exports = function() {
     let ngramsByStart;
     try {
-        // ngramsByStart = require('./probs');
+        ngramsByStart = require('./probs');
     } catch(e) {}
 
 
@@ -36,7 +36,7 @@ const run = module.exports = function() {
     })
 }
 
-run();
+// run();
 
 function _train(ngramsByStart, next) {
     if (ngramsByStart) return next(null, ngramsByStart);
