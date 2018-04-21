@@ -33,7 +33,7 @@ module.exports = function() {
 
 
     return _train(ngramsByStart, (err, ngramsByStart) => {
-        let cleanOutput = _generate(ngramsByStart);
+        let cleanOutput = generate(ngramsByStart);
         console.log(cleanOutput);
         _tweet(cleanOutput);
     })
@@ -45,7 +45,8 @@ function _train(ngramsByStart, next) {
     fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
 
         if (TRAINING_DATA_PATH === './datasets/arcade_fire.json')
-            contents = JSON.stringify(JSON.parse(contents).map((el) => el.text));
+            contents = JSON.stringify(JSON.parse(contents)
+                            .filter((el) => el.collection !== 'other songs:').map((el) => el.text));
         else if (TRAINING_DATA_PATH === './datasets/djt.json')
             contents = JSON.stringify(JSON.parse(contents).slice(0, 1000));
 
@@ -115,7 +116,7 @@ function _train(ngramsByStart, next) {
 
 }
 
-function _generate(ngramsByStart) {
+function generate(ngramsByStart) {
     var outupt = _generate(ngramsByStart);
     // console.log(outupt);
     var cleanOutput = _cleanOutput(outupt);
