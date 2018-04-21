@@ -92,7 +92,7 @@ function _train(ngramsByStart, next) {
         var ngramProbs = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
             var ngram = ngramKey.split(',');
             var nm1gram = ngram.slice(0, ngram.length - 1);
-            hash[ngram.toString()] = ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()];
+            hash[ngram.toString()] = ngramCounts[ngram.toString()] / (nm1gramCounts[nm1gram.toString()] || 1);
             // console.log(hash[ngram.toString()], ngramKey, ngramCounts[ngram.toString()], nm1gram.toString(), nm1gramCounts[nm1gram.toString()]);
             // if (!(ngramCounts[ngram.toString()] / nm1gramCounts[nm1gram.toString()]))
             //     console.log(ngramKey, nm1gramCounts[nm1gram.toString()]);
