@@ -7,8 +7,8 @@ const START = '<start>';
 const END = '<end>';
 const SPLIT = '<new>' //'.'
 // const SPLIT = '<new>' //'.'
-const N = 4;
-const OVERLAP_WINDOW = 3;
+const N = 3;
+const OVERLAP_WINDOW = 2;
 
 var START_MATCH = [];
 var END_MATCH = [];
@@ -24,10 +24,10 @@ fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
     if (TRAINING_DATA_PATH === './datasets/arcade_fire.json')
         contents = JSON.stringify(JSON.parse(contents).map((el) => el.text));
 
-    console.log(contents.toString());
+    // console.log(contents.toString());
     contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
     // console.log(contents);
-    // var ngramsByStart = require('./probs');
+    var ngramsByStart = require('./probs');
     // var ngramsByStart = null; //require('./probs');
 
     if (!ngramsByStart) {
