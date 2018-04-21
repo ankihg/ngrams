@@ -1,3 +1,6 @@
 node_modules
 probs.json
 config.json
+datasets/JEOPARDY_QUESTIONS1.json
+datasets/jeopardy.txt
+datasets/
