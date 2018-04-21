@@ -2,16 +2,18 @@ const natural = require('natural');
 const fs = require('fs');
 const twitter = require('./twitter');
 
+const CONFIG = require('./config')
+
 // const TRAINING_DATA_PATH = './datasets/djt.json';
-const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
-const TWEET = true;
+const TRAINING_DATA_PATH = CONFIG.TRAININGDATA_FILEPATH || './datasets/arcade_fire.json';
+const TWEET = CONFIG.TWEET || false;
 
 const START = '<start>';
 const END = '<end>';
 const SPLIT = '<new>' //'.'
 // const SPLIT = '<new>' //'.'
-const N = 3;
-const OVERLAP_WINDOW = 2;
+const N = CONFIG.WINDOWSIZE || 3;
+const OVERLAP_WINDOW = CONFIG.OVERLAP_WINDOWSIZE || 2;
 
 var START_MATCH = [];
 var END_MATCH = [];
@@ -36,7 +38,7 @@ const run = module.exports = function() {
     })
 }
 
-// run();
+run();
 
 function _train(ngramsByStart, next) {
     if (ngramsByStart) return next(null, ngramsByStart);
