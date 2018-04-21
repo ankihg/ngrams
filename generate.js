@@ -132,7 +132,6 @@ function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
     if (start === END_MATCH) return phrase;
 
     var possibleNGrams = _ngramsByStart[start];
-    console.log('probs for ', start, '\n', possibleNGrams);
     var nextNgramIndex = _selectNextNgram('probability')
     var ngram = possibleNGrams[nextNgramIndex].ngram;
     phrase += ' ' + ngram.slice(OVERLAP_WINDOW).join(' ');
@@ -148,10 +147,8 @@ function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
                 ngramIndexByRange: {},
                 sum: 0,
             })
-            console.log(reduced.ngramIndexByRange);
 
             let random = Math.random() * reduced.sum;
-            console.log('random', random);
 
             let ranges = Object.keys(reduced.ngramIndexByRange);
             for (let i = 0; i < ranges.length; i++) {
