@@ -3,6 +3,7 @@ const fs = require('fs');
 const twitter = require('./twitter');
 
 const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
+const TWEET = false;
 
 const START = '<start>';
 const END = '<end>';
@@ -91,7 +92,7 @@ fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
     // console.log(outupt);
     var cleanOutput = _cleanOutput(outupt);
     console.log(cleanOutput);
-    twitter.post(cleanOutput);
+    if (TWEET) twitter.post(cleanOutput);
 });
 
 function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
