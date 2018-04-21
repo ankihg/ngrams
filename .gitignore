@@ -5,3 +5,4 @@ datasets/jeopardy.txt
 datasets/
 xtwitter/
 twitter/config.json
+musixmatch/config.json
