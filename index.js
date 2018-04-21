@@ -1,5 +1,6 @@
 const natural = require('natural');
 const fs = require('fs');
+const twitter = require('./twitter');
 
 const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
 
@@ -88,7 +89,9 @@ fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
 
     var outupt = _generate(ngramsByStart);
     // console.log(outupt);
-    console.log(_cleanOutput(outupt));
+    var cleanOutput = _cleanOutput(outupt);
+    console.log(cleanOutput);
+    twitter.post(cleanOutput);
 });
 
 function _generate(_ngramsByStart, phrase='', start=START_MATCH) {

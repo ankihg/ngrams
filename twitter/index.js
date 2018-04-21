@@ -9,9 +9,10 @@ const T = new Twit({
     timeout_ms: 60*1000,  // optional HTTP request timeout to apply to all requests.
 })
 
-//
-//  tweet 'hello world!'
-//
-T.post('statuses/update', { status: 'plz respond' }, function(err, data, response) {
-    console.log(data)
-})
+module.exports = {
+    post(status) {
+        T.post('statuses/update', { status: status }, function(err, data, response) {
+            console.log(err, data)
+        })
+    }
+}
