@@ -165,7 +165,7 @@ function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
 function _cleanOutput(str) {
     return str
         .replace(/ 000 /g, '\n ').replace(/ 000 /g, '\n ')
-        .replace(/ m /g, '\'m ').replace(/ s /g, '\'s ')
+        .replace(/ m /g, '\'m ').replace(/ s /g, '\'s ').replace(/ t /g, '\'t ')
         .replace(/ ve /g, '\'ve ').replace(/ re /g, '\'re ')
         .replace(new RegExp(START, 'g'), '')
         .replace(new RegExp(END, 'g'), '');
