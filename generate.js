@@ -27,7 +27,8 @@ END_MATCH = END_MATCH.toString();
 module.exports = function() {
     let ngramsByStart;
     try {
-        ngramsByStart = require('./probs');
+        if (CONFIG.USE_TRAINED)
+            ngramsByStart = require('./probs');
     } catch(e) {}
 
 

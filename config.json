@@ -3,5 +3,6 @@
     "TWEET": false,
     "WINDOWSIZE": 3,
     "OVERLAP_WINDOWSIZE": 2,
-    "SPLIT_TOKEN": "."
+    "SPLIT_TOKEN": "\n\n",
+    "USE_TRAINED": false
 }
