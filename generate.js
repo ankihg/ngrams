@@ -24,7 +24,7 @@ for (var i = 0; i < OVERLAP_WINDOW; i++) {
 START_MATCH = START_MATCH.toString();
 END_MATCH = END_MATCH.toString();
 
-const run = module.exports = function() {
+module.exports = function() {
     let ngramsByStart;
     try {
         ngramsByStart = require('./probs');
@@ -37,8 +37,6 @@ const run = module.exports = function() {
         _tweet(cleanOutput);
     })
 }
-
-run();
 
 function _train(ngramsByStart, next) {
     if (ngramsByStart) return next(null, ngramsByStart);

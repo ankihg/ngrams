@@ -1,5 +1,5 @@
 const T = require('./init')
-const generateNgram = require('../index');
+const generateNgram = require('../generate');
 
 //
 //  filter the twitter public stream by the word 'mango'.
