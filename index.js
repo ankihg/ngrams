@@ -2,7 +2,8 @@ const natural = require('natural');
 const fs = require('fs');
 const twitter = require('./twitter');
 
-const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
+const TRAINING_DATA_PATH = './datasets/djt.json';
+// const TRAINING_DATA_PATH = './datasets/arcade_fire.json';
 const TWEET = false;
 
 const START = '<start>';
@@ -21,18 +22,36 @@ for (var i = 0; i < OVERLAP_WINDOW; i++) {
 START_MATCH = START_MATCH.toString();
 END_MATCH = END_MATCH.toString();
 
-fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
+const run = module.exports = function() {
+    let ngramsByStart;
+    try {
+        // ngramsByStart = require('./probs');
+    } catch(e) {}
 
-    if (TRAINING_DATA_PATH === './datasets/arcade_fire.json')
-        contents = JSON.stringify(JSON.parse(contents).map((el) => el.text));
 
-    // console.log(contents.toString());
-    contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
-    // console.log(contents);
-    var ngramsByStart = require('./probs');
-    // var ngramsByStart = null; //require('./probs');
+    return _train(ngramsByStart, (err, ngramsByStart) => {
+        let cleanOutput = _generate(ngramsByStart);
+        console.log(cleanOutput);
+        _tweet(cleanOutput);
+    })
+}
 
-    if (!ngramsByStart) {
+run();
+
+function _train(ngramsByStart, next) {
+    if (ngramsByStart) return next(null, ngramsByStart);
+
+    fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
+
+        if (TRAINING_DATA_PATH === './datasets/arcade_fire.json')
+            contents = JSON.stringify(JSON.parse(contents).map((el) => el.text));
+        else if (TRAINING_DATA_PATH === './datasets/djt.json')
+            contents = JSON.stringify(JSON.parse(contents).slice(0, 1000));
+
+        // console.log(contents.toString());
+        contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
+        // console.log(contents);
+
         var phrases = JSON.parse(contents.toString());
         // var phrases = contents.toString().toLowerCase().split(new RegExp(SPLIT)) //.split(/\.\s/);
         console.log(phrases.length);
@@ -75,7 +94,7 @@ fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
         }, {});
 
         console.log('4');
-        var ngramsByStart = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
+        ngramsByStart = Object.keys(ngramCounts).reduce((hash, ngramKey) => {
             var ngram = ngramKey.split(',');
             var matchKey = ngram.slice(0, OVERLAP_WINDOW).toString();
             hash[matchKey] = hash[matchKey] || [];
@@ -86,14 +105,21 @@ fs.readFile(TRAINING_DATA_PATH, (err, contents) => {
         // console.log(ngramsByStart);
         fs.writeFile('./probs.json', JSON.stringify(ngramsByStart, null, 4), (err) => { err && console.log(err);})
         console.log('5');
-    }
+        return next(null, ngramsByStart);
+    });
 
+}
+
+function _generate(ngramsByStart) {
     var outupt = _generate(ngramsByStart);
     // console.log(outupt);
     var cleanOutput = _cleanOutput(outupt);
-    console.log(cleanOutput);
+    return cleanOutput;
+}
+
+function _tweet(cleanOutput) {
     if (TWEET) twitter.post(cleanOutput);
-});
+}
 
 function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
     // phrase = phrase || '';
