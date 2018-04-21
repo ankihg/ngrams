@@ -10,7 +10,7 @@ const TWEET = CONFIG.TWEET || false;
 
 const START = '<start>';
 const END = '<end>';
-const SPLIT = '<new>' //'.'
+const SPLIT = CONFIG.SPLIT_TOKEN || '<new>'; //'.'
 // const SPLIT = '<new>' //'.'
 const N = CONFIG.WINDOWSIZE || 3;
 const OVERLAP_WINDOW = CONFIG.OVERLAP_WINDOWSIZE || 2;
@@ -52,8 +52,12 @@ function _train(ngramsByStart, next) {
         contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
         // console.log(contents);
 
-        var phrases = JSON.parse(contents.toString());
-        // var phrases = contents.toString().toLowerCase().split(new RegExp(SPLIT)) //.split(/\.\s/);
+        var phrases;
+        if (TRAINING_DATA_PATH.split('.').pop() === 'json')
+            phrases = JSON.parse(contents.toString());
+        else
+            phrases = contents.toString().toLowerCase().split(new RegExp(SPLIT)) //.split(/\.\s/);
+
         console.log(phrases.length);
         // console.log(phrases);
         console.log('0');

@@ -6,6 +6,6 @@ module.exprts = {
 
     },
     _key(config) {
-
+        return
     },
 }

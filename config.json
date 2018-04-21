@@ -1,6 +1,7 @@
 {
-    "TRAININGDATA_FILEPATH": "./datasets/arcade_fire.json",
+    "TRAININGDATA_FILEPATH": "./datasets/drseuss.txt",
     "TWEET": false,
     "WINDOWSIZE": 3,
-    "OVERLAP_WINDOWSIZE": 2
+    "OVERLAP_WINDOWSIZE": 2,
+    "SPLIT_TOKEN": "."
 }
