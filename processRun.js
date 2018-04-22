@@ -19,6 +19,9 @@ module.exports = function(params) {
         }, {})
 
         console.log(outputs);
+
+        console.log(Object.keys(outputs), '/', ngrams);
+        console.log(Object.keys(outputs).length, '/', ngrams.length);
     }
 
 }
