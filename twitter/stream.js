@@ -8,8 +8,8 @@ const run = require('../processRun');
 //  filter the twitter public stream by the word 'mango'.
 //
 
-run({text: 'the century by the bombs fell'});
-
+let output = run({text: 'the century by the bombs fell'});
+console.log(output);
 // _stream('arcade fire')
 
 
