@@ -8,8 +8,8 @@ const CONFIG = require('./config')
 const TRAINING_DATA_PATH = CONFIG.TRAININGDATA_FILEPATH || './datasets/arcade_fire.json';
 const TWEET = CONFIG.TWEET || false;
 
-const START = '<start>';
-const END = '<end>';
+const START = CONFIG.TOKENS.START;
+const END = CONFIG.TOKENS.END;
 const SPLIT = CONFIG.SPLIT_TOKEN || '<new>'; //'.'
 // const SPLIT = '<new>' //'.'
 const N = CONFIG.WINDOWSIZE || 3;
@@ -31,12 +31,17 @@ module.exports = function(params) {
             ngramsByStart = require('./probs');
     } catch(e) {}
 
+    if (ngramsByStart)
+        return _exec(null, ngramsByStart);
+    return _train(ngramsByStart, _exec);
 
-    return _train(ngramsByStart, (err, ngramsByStart) => {
-        let cleanOutput = generate(params, ngramsByStart);
-        console.log(cleanOutput);
-        _tweet(cleanOutput);
-    })
+
+        function _exec(err, ngramsByStart) {
+            let cleanOutput = generate(params, ngramsByStart);
+            console.log(cleanOutput);
+            _tweet(cleanOutput);
+            return cleanOutput;
+        }
 
         function generate(params, ngramsByStart) {
             var outupt = _generate(ngramsByStart, '', params.startsWith);
@@ -48,7 +53,6 @@ module.exports = function(params) {
                 // phrase = phrase || '';
                 // start = start || START;
                 if (start === END_MATCH) return phrase;
-                console.log('start', start);
 
                 var possibleNGrams = _ngramsByStart[start];
                 if (!possibleNGrams) {
@@ -101,9 +105,7 @@ function _train(ngramsByStart, next) {
         else if (TRAINING_DATA_PATH === './datasets/djt.json')
             contents = JSON.stringify(JSON.parse(contents).slice(0, 1000));
 
-        // console.log(contents.toString());
         contents = contents.toString().toLowerCase().replace(/\.\s/g, ' ' + START + ' ' + END + ' ')
-        // console.log(contents);
 
         var phrases;
         if (TRAINING_DATA_PATH.split('.').pop() === 'json')

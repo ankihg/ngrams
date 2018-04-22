@@ -5,6 +5,10 @@
     "OVERLAP_WINDOWSIZE": 2,
     "SPLIT_TOKEN": "\n",
     "USE_TRAINED": true,
+    "TOKENS": {
+        "START": "<start>",
+        "END": "<end>"
+    },
     "RUN": {
         "STARTS_WITH": "help,me"
     }
