@@ -3,6 +3,9 @@
     "TWEET": false,
     "WINDOWSIZE": 3,
     "OVERLAP_WINDOWSIZE": 2,
-    "SPLIT_TOKEN": null,
-    "USE_TRAINED": true
+    "SPLIT_TOKEN": "\n",
+    "USE_TRAINED": true,
+    "RUN": {
+        "STARTS_WITH": "help,me"
+    }
 }

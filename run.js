@@ -1,3 +1,4 @@
 const generate = require('./generate');
+const CONFIG = require('./config');
 
-generate();
+generate({ startsWith: CONFIG.RUN.STARTS_WITH });

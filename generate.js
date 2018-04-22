@@ -24,7 +24,7 @@ for (var i = 0; i < OVERLAP_WINDOW; i++) {
 START_MATCH = START_MATCH.toString();
 END_MATCH = END_MATCH.toString();
 
-module.exports = function() {
+module.exports = function(params) {
     let ngramsByStart;
     try {
         if (CONFIG.USE_TRAINED)
@@ -33,10 +33,61 @@ module.exports = function() {
 
 
     return _train(ngramsByStart, (err, ngramsByStart) => {
-        let cleanOutput = generate(ngramsByStart);
+        let cleanOutput = generate(params, ngramsByStart);
         console.log(cleanOutput);
         _tweet(cleanOutput);
     })
+
+        function generate(params, ngramsByStart) {
+            var outupt = _generate(ngramsByStart, '', params.startsWith);
+            // console.log(outupt);
+            var cleanOutput = _cleanOutput(outupt);
+            return cleanOutput;
+
+            function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
+                // phrase = phrase || '';
+                // start = start || START;
+                if (start === END_MATCH) return phrase;
+                console.log('start', start);
+
+                var possibleNGrams = _ngramsByStart[start];
+                if (!possibleNGrams) {
+                    console.log('[NOTICE] no ngram matches for start ' + start);
+                    return _generate(_ngramsByStart, phrase, END_MATCH);
+                }
+                var nextNgramIndex = _selectNextNgram('probability')
+                var ngram = possibleNGrams[nextNgramIndex].ngram;
+                phrase += ' ' + ngram.slice(OVERLAP_WINDOW).join(' ');
+                return _generate(_ngramsByStart, phrase, ngram.slice(ngram.length - OVERLAP_WINDOW).toString());
+
+                function _selectNextNgram(method) {
+                    if (method === 'probability') {
+                        let reduced = possibleNGrams.reduce((acc, ngram, index) => {
+                            acc.ngramIndexByRange[acc.sum] = index;
+                            acc.sum += ngram.prob;
+                            return acc;
+                        }, {
+                            ngramIndexByRange: {},
+                            sum: 0,
+                        })
+
+                        let random = Math.random() * reduced.sum;
+
+                        let ranges = Object.keys(reduced.ngramIndexByRange);
+                        for (let i = 0; i < ranges.length; i++) {
+                            if (random >= ranges[i] && (ranges[i + 1] ? random < ranges[i + 1] : true))
+                                return reduced.ngramIndexByRange[ranges[i]]
+                        }
+                    }
+                    console.log('[NOTICE] randomly selecting next ngram');
+                    return Math.floor(Math.random() * possibleNGrams.length);
+                }
+            }
+        }
+
+        function _tweet(cleanOutput) {
+            if (TWEET) twitter.post(cleanOutput);
+        }
 }
 
 function _train(ngramsByStart, next) {
@@ -114,52 +165,6 @@ function _train(ngramsByStart, next) {
         return next(null, ngramsByStart);
     });
 
-}
-
-function generate(ngramsByStart) {
-    var outupt = _generate(ngramsByStart);
-    // console.log(outupt);
-    var cleanOutput = _cleanOutput(outupt);
-    return cleanOutput;
-}
-
-function _tweet(cleanOutput) {
-    if (TWEET) twitter.post(cleanOutput);
-}
-
-function _generate(_ngramsByStart, phrase='', start=START_MATCH) {
-    // phrase = phrase || '';
-    // start = start || START;
-    if (start === END_MATCH) return phrase;
-
-    var possibleNGrams = _ngramsByStart[start];
-    var nextNgramIndex = _selectNextNgram('probability')
-    var ngram = possibleNGrams[nextNgramIndex].ngram;
-    phrase += ' ' + ngram.slice(OVERLAP_WINDOW).join(' ');
-    return _generate(_ngramsByStart, phrase, ngram.slice(ngram.length - OVERLAP_WINDOW).toString());
-
-    function _selectNextNgram(method) {
-        if (method === 'probability') {
-            let reduced = possibleNGrams.reduce((acc, ngram, index) => {
-                acc.ngramIndexByRange[acc.sum] = index;
-                acc.sum += ngram.prob;
-                return acc;
-            }, {
-                ngramIndexByRange: {},
-                sum: 0,
-            })
-
-            let random = Math.random() * reduced.sum;
-
-            let ranges = Object.keys(reduced.ngramIndexByRange);
-            for (let i = 0; i < ranges.length; i++) {
-                if (random >= ranges[i] && (ranges[i + 1] ? random < ranges[i + 1] : true))
-                    return reduced.ngramIndexByRange[ranges[i]]
-            }
-        }
-        console.log('[NOTICE] randomly selecting next ngram');
-        return Math.floor(Math.random() * possibleNGrams.length);
-    }
 }
 
 function _cleanOutput(str) {
