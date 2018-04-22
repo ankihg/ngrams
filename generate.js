@@ -53,7 +53,7 @@ module.exports = function(params) {
 
                 var possibleNGrams = _ngramsByStart[start];
                 if (!possibleNGrams) {
-                    console.log('[NOTICE] no ngram matches for start ' + start);
+                    // console.log('[NOTICE] no ngram matches for start ' + start);
                     return _generate(_ngramsByStart, phrase, END_MATCH);
                 }
                 var nextNgramIndex = _selectNextNgram('probability')
