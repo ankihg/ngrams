@@ -1,6 +1,6 @@
 {
     "TRAININGDATA_FILEPATH": "./datasets/arcade_fire.json",
-    "TWEET": true,
+    "TWEET": false,
     "STREAM": "cats",
 
     "WINDOWSIZE": 3,

@@ -9,15 +9,19 @@ const twitter = require('./twitter');
 if (CONFIG.STREAM)
     return stream(CONFIG.STREAM, (err, event) => {
         let output =  run(event);
-        if (output)
+        if (output) {
+            console.log('\n\t####STREAM####');
+            console.log(event.text);
+            console.log('\n\t####TWEETING####');
+            console.log(output);
+
             _tweet(output);
+        }
     });
 else
     return generate({ startsWith: CONFIG.RUN.STARTS_WITH });
 
 
 function _tweet(content) {
-    console.log('\n\t####TWEETING####');
-    console.log(content);
     if (CONFIG.TWEET) twitter.post(content);
 }
