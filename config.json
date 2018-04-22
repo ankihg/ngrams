@@ -1,6 +1,8 @@
 {
     "TRAININGDATA_FILEPATH": "./datasets/arcade_fire.json",
     "TWEET": false,
+    "STREAM": null,
+
     "WINDOWSIZE": 3,
     "OVERLAP_WINDOWSIZE": 2,
     "SPLIT_TOKEN": "\n",
@@ -10,6 +12,6 @@
         "END": "<end>"
     },
     "RUN": {
-        "STARTS_WITH": "help,me"
+        "STARTS_WITH": "city,with"
     }
 }

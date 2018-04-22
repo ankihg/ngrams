@@ -1,23 +1,23 @@
 const natural = require('natural');
 
 const T = require('./init')
-const generateNgram = require('../generate');
-const run = require('../processRun');
+// const generateNgram = require('../generate');
+// const run = require('../processRun');
 
 //
 //  filter the twitter public stream by the word 'mango'.
 //
 
-let output = run({text: 'the century by the bombs fell'});
-console.log(output);
+// let output = run({text: 'arcade fire played the best show of the century'});
+// console.log(output);
 // _stream('arcade fire')
 
 
-function _stream(track) {
+module.exports = function _stream(track, callback) {
     T.stream('statuses/filter', { track: track })
         .on('tweet', function (tweet) {
           console.log('\n\n' + track + '\n');
           console.log(tweet.text);
-          generateNgram({text: tweet.text});
+          callback(null, {text: tweet.text});
         })
 }
