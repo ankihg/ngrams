@@ -16,7 +16,7 @@ const T = require('./init')
 module.exports = function _stream(track, callback) {
     T.stream('statuses/filter', { track: track })
         .on('tweet', function (tweet) {
-          console.log('\n\n' + track + '\n');
+          console.log('\n' + track.toUpperCase());
           console.log(tweet.text);
           callback(null, {text: tweet.text});
         })
