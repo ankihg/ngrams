@@ -1,6 +1,5 @@
 const natural = require('natural');
 const fs = require('fs');
-const twitter = require('./twitter');
 
 const CONFIG = require('./config')
 
@@ -38,8 +37,6 @@ module.exports = function(params) {
 
         function _exec(err, ngramsByStart) {
             let cleanOutput = generate(params, ngramsByStart);
-            console.log(cleanOutput);
-            _tweet(cleanOutput);
             return cleanOutput;
         }
 
@@ -89,9 +86,6 @@ module.exports = function(params) {
             }
         }
 
-        function _tweet(cleanOutput) {
-            if (TWEET) twitter.post(cleanOutput);
-        }
 }
 
 function _train(ngramsByStart, next) {
