@@ -1,7 +1,6 @@
 {
     "TRAININGDATA_FILEPATH": "./datasets/arcade_fire.json",
     "TWEET": false,
-    "STREAM": "cats",
 
     "WINDOWSIZE": 3,
     "OVERLAP_WINDOWSIZE": 2,
@@ -12,6 +11,6 @@
         "END": "<end>"
     },
     "RUN": {
-        "STARTS_WITH": "city,with"
+        "STARTS_WITH": "the,grass"
     }
 }

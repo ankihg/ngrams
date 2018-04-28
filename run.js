@@ -18,8 +18,10 @@ if (CONFIG.STREAM)
             _tweet(output);
         }
     });
-else
+else {
+    console.log(generate({ startsWith: CONFIG.RUN.STARTS_WITH }));
     return generate({ startsWith: CONFIG.RUN.STARTS_WITH });
+}
 
 
 function _tweet(content) {
