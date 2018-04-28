@@ -44,7 +44,7 @@ module.exports = function(params) {
 
             // dont generate if start contains only the following 1grams
             if (params.startsWith) {
-                var ignore1grams = {'it':1, 'is':1, 's':1, 'the':1, 'a':1, 'from':1, 'to':1, 'with':1, 'don':1, 't':1};
+                var ignore1grams = {'it':1, 'is':1, 's':1, 'the':1, 'a':1, 'from':1, 'to':1, 'with':1, 'don':1, 't':1, 'but':1, 'not':1, 'at':1};
                 var _1grams = params.startsWith.split(',');
                 var doGenerate = _1grams.reduce((doIt, _1gram) => doIt || !ignore1grams[_1gram], false);
                 if (!doGenerate) return '';

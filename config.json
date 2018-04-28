@@ -1,6 +1,7 @@
 {
     "TRAININGDATA_FILEPATH": "./datasets/arcade_fire.json",
-    "TWEET": false,
+    "TWEET": true,
+    "STREAM": "kanye west",
 
     "WINDOWSIZE": 3,
     "OVERLAP_WINDOWSIZE": 2,
@@ -10,6 +11,8 @@
         "START": "<start>",
         "END": "<end>"
     },
+
+    
     "RUN": {
         "STARTS_WITH": "the,grass"
     }
